@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.base.entity.mapper.CdItemMapper" >
+  <resultMap id="BaseResultMap" type="com.xmomen.module.base.entity.CdItem" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ITEM_CODE" property="itemCode" jdbcType="VARCHAR" />
+    <result column="CD_CATEGORY_ID" property="cdCategoryId" jdbcType="INTEGER" />
+    <result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+    <result column="ITEM_DESCRIBE" property="itemDescribe" jdbcType="VARCHAR" />
+    <result column="ITEM_TYPE" property="itemType" jdbcType="INTEGER" />
+    <result column="YIELDLY" property="yieldly" jdbcType="VARCHAR" />
+    <result column="SPEC" property="spec" jdbcType="VARCHAR" />
+    <result column="BASE_PRICE" property="basePrice" jdbcType="DECIMAL" />
+    <result column="MEMBER_PRICE" property="memberPrice" jdbcType="DECIMAL" />
+    <result column="PRICING_MANNER" property="pricingManner" jdbcType="VARCHAR" />
+    <result column="SELL_STATUS" property="sellStatus" jdbcType="INTEGER" />
+    <result column="SELL_UNIT" property="sellUnit" jdbcType="VARCHAR" />
+    <result column="SELL_PRICE" property="sellPrice" jdbcType="DECIMAL" />
+    <result column="IS_AUDIT" property="isAudit" jdbcType="INTEGER" />
+    <result column="CREATE_DATE_TIME" property="createDateTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_USER_CODE" property="createUserCode" jdbcType="VARCHAR" />
+    <result column="CAIZAI_USER" property="caizaiUser" jdbcType="VARCHAR" />
+    <result column="JIANCE_USER" property="jianceUser" jdbcType="VARCHAR" />
+    <result column="NONG_CAN_LV" property="nongCanLv" jdbcType="VARCHAR" />
+    <result column="YI_YANG_CHEN_FEN" property="yiYangChenFen" jdbcType="VARCHAR" />
+    <result column="BAO_ZHI_QI" property="baoZhiQi" jdbcType="INTEGER" />
+    <result column="SHI_YI_REN_QUN" property="shiYiRenQun" jdbcType="VARCHAR" />
+    <result column="XIAN_SHI_QIANG_GOU" property="xianShiQiangGou" jdbcType="INTEGER" />
+    <result column="XIN_PIN_CHANG_XIAN" property="xinPinChangXian" jdbcType="INTEGER" />
+    <result column="RE_MAI_TUI_JIAN" property="reMaiTuiJian" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, ITEM_CODE, CD_CATEGORY_ID, ITEM_NAME, ITEM_DESCRIBE, ITEM_TYPE, YIELDLY, SPEC, 
+    BASE_PRICE, MEMBER_PRICE, PRICING_MANNER, SELL_STATUS, SELL_UNIT, SELL_PRICE, IS_AUDIT, 
+    CREATE_DATE_TIME, CREATE_USER_CODE, CAIZAI_USER, JIANCE_USER, NONG_CAN_LV, YI_YANG_CHEN_FEN, 
+    BAO_ZHI_QI, SHI_YI_REN_QUN, XIAN_SHI_QIANG_GOU, XIN_PIN_CHANG_XIAN, RE_MAI_TUI_JIAN
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xmomen.module.base.entity.CdItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cd_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.xmomen.module.base.entity.CdItemExample" >
+    delete from cd_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insertSelective" parameterType="com.xmomen.module.base.entity.CdItem" useGeneratedKeys="true" keyProperty="id" keyColumn="ID" >
+    insert into cd_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="itemCode != null" >
+        ITEM_CODE,
+      </if>
+      <if test="cdCategoryId != null" >
+        CD_CATEGORY_ID,
+      </if>
+      <if test="itemName != null" >
+        ITEM_NAME,
+      </if>
+      <if test="itemDescribe != null" >
+        ITEM_DESCRIBE,
+      </if>
+      <if test="itemType != null" >
+        ITEM_TYPE,
+      </if>
+      <if test="yieldly != null" >
+        YIELDLY,
+      </if>
+      <if test="spec != null" >
+        SPEC,
+      </if>
+      <if test="basePrice != null" >
+        BASE_PRICE,
+      </if>
+      <if test="memberPrice != null" >
+        MEMBER_PRICE,
+      </if>
+      <if test="pricingManner != null" >
+        PRICING_MANNER,
+      </if>
+      <if test="sellStatus != null" >
+        SELL_STATUS,
+      </if>
+      <if test="sellUnit != null" >
+        SELL_UNIT,
+      </if>
+      <if test="sellPrice != null" >
+        SELL_PRICE,
+      </if>
+      <if test="isAudit != null" >
+        IS_AUDIT,
+      </if>
+      <if test="createDateTime != null" >
+        CREATE_DATE_TIME,
+      </if>
+      <if test="createUserCode != null" >
+        CREATE_USER_CODE,
+      </if>
+      <if test="caizaiUser != null" >
+        CAIZAI_USER,
+      </if>
+      <if test="jianceUser != null" >
+        JIANCE_USER,
+      </if>
+      <if test="nongCanLv != null" >
+        NONG_CAN_LV,
+      </if>
+      <if test="yiYangChenFen != null" >
+        YI_YANG_CHEN_FEN,
+      </if>
+      <if test="baoZhiQi != null" >
+        BAO_ZHI_QI,
+      </if>
+      <if test="shiYiRenQun != null" >
+        SHI_YI_REN_QUN,
+      </if>
+      <if test="xianShiQiangGou != null" >
+        XIAN_SHI_QIANG_GOU,
+      </if>
+      <if test="xinPinChangXian != null" >
+        XIN_PIN_CHANG_XIAN,
+      </if>
+      <if test="reMaiTuiJian != null" >
+        RE_MAI_TUI_JIAN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="itemCode != null" >
+        #{itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cdCategoryId != null" >
+        #{cdCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescribe != null" >
+        #{itemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="itemType != null" >
+        #{itemType,jdbcType=INTEGER},
+      </if>
+      <if test="yieldly != null" >
+        #{yieldly,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="basePrice != null" >
+        #{basePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="memberPrice != null" >
+        #{memberPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pricingManner != null" >
+        #{pricingManner,jdbcType=VARCHAR},
+      </if>
+      <if test="sellStatus != null" >
+        #{sellStatus,jdbcType=INTEGER},
+      </if>
+      <if test="sellUnit != null" >
+        #{sellUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="sellPrice != null" >
+        #{sellPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="isAudit != null" >
+        #{isAudit,jdbcType=INTEGER},
+      </if>
+      <if test="createDateTime != null" >
+        #{createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserCode != null" >
+        #{createUserCode,jdbcType=VARCHAR},
+      </if>
+      <if test="caizaiUser != null" >
+        #{caizaiUser,jdbcType=VARCHAR},
+      </if>
+      <if test="jianceUser != null" >
+        #{jianceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="nongCanLv != null" >
+        #{nongCanLv,jdbcType=VARCHAR},
+      </if>
+      <if test="yiYangChenFen != null" >
+        #{yiYangChenFen,jdbcType=VARCHAR},
+      </if>
+      <if test="baoZhiQi != null" >
+        #{baoZhiQi,jdbcType=INTEGER},
+      </if>
+      <if test="shiYiRenQun != null" >
+        #{shiYiRenQun,jdbcType=VARCHAR},
+      </if>
+      <if test="xianShiQiangGou != null" >
+        #{xianShiQiangGou,jdbcType=INTEGER},
+      </if>
+      <if test="xinPinChangXian != null" >
+        #{xinPinChangXian,jdbcType=INTEGER},
+      </if>
+      <if test="reMaiTuiJian != null" >
+        #{reMaiTuiJian,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xmomen.module.base.entity.CdItemExample" resultType="java.lang.Integer" >
+    select count(*) from cd_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update cd_item
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemCode != null" >
+        ITEM_CODE = #{record.itemCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdCategoryId != null" >
+        CD_CATEGORY_ID = #{record.cdCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemName != null" >
+        ITEM_NAME = #{record.itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemDescribe != null" >
+        ITEM_DESCRIBE = #{record.itemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemType != null" >
+        ITEM_TYPE = #{record.itemType,jdbcType=INTEGER},
+      </if>
+      <if test="record.yieldly != null" >
+        YIELDLY = #{record.yieldly,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spec != null" >
+        SPEC = #{record.spec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.basePrice != null" >
+        BASE_PRICE = #{record.basePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memberPrice != null" >
+        MEMBER_PRICE = #{record.memberPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pricingManner != null" >
+        PRICING_MANNER = #{record.pricingManner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellStatus != null" >
+        SELL_STATUS = #{record.sellStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.sellUnit != null" >
+        SELL_UNIT = #{record.sellUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellPrice != null" >
+        SELL_PRICE = #{record.sellPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isAudit != null" >
+        IS_AUDIT = #{record.isAudit,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDateTime != null" >
+        CREATE_DATE_TIME = #{record.createDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserCode != null" >
+        CREATE_USER_CODE = #{record.createUserCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caizaiUser != null" >
+        CAIZAI_USER = #{record.caizaiUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jianceUser != null" >
+        JIANCE_USER = #{record.jianceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nongCanLv != null" >
+        NONG_CAN_LV = #{record.nongCanLv,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yiYangChenFen != null" >
+        YI_YANG_CHEN_FEN = #{record.yiYangChenFen,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baoZhiQi != null" >
+        BAO_ZHI_QI = #{record.baoZhiQi,jdbcType=INTEGER},
+      </if>
+      <if test="record.shiYiRenQun != null" >
+        SHI_YI_REN_QUN = #{record.shiYiRenQun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xianShiQiangGou != null" >
+        XIAN_SHI_QIANG_GOU = #{record.xianShiQiangGou,jdbcType=INTEGER},
+      </if>
+      <if test="record.xinPinChangXian != null" >
+        XIN_PIN_CHANG_XIAN = #{record.xinPinChangXian,jdbcType=INTEGER},
+      </if>
+      <if test="record.reMaiTuiJian != null" >
+        RE_MAI_TUI_JIAN = #{record.reMaiTuiJian,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.base.mapper.CompanyMapper" >
+
+	<resultMap type="com.xmomen.module.base.model.CompanyModel" id="CustomerCompany">
+		 	<id column="id" property="id"/>
+		 	<result column="company_leader_tel" property="companyLeaderTel" />
+		 	<result column="company_name" property="companyName" />
+		 	<result column="company_address" property="companyAddress" />
+		 	<result column="company_leader" property="companyLeader" />
+			<collection property="companyCustomerManagers" ofType="com.xmomen.module.base.model.CompanyCustomerManager" column="id" select="queryCompanyManagerList"></collection>
+    </resultMap>
+
+    <!--    查询消息    -->
+    <select id="getCompanyList" resultMap="CustomerCompany" parameterType="java.util.HashMap">
+       select 
+       	cc.*
+       from cd_company cc
+        <if test="managerId != null">
+				LEFT JOIN cd_manager_company mc
+			ON mc.CD_COMPANY_ID = cc.ID
+		</if>
+		<where>
+              <if test="keyword">
+                  AND cc.company_Code LIKE CONCAT('%', #{keyword}, '%') or cc.company_name LIKE CONCAT('%', #{keyword}, '%')
+              </if>
+              <if test="id">
+                  AND cc.id = #{id}
+              </if>
+			  <if test="managerId">
+				  AND mc.CD_MANAGER_ID = #{managerId}
+			  </if>
+          </where>
+    </select>
+    
+    <select id="queryCompanyManagerList" resultType="com.xmomen.module.base.model.CompanyCustomerManager" parameterType="Integer">
+		select  
+			su.realName as customerManger,
+			su.id as customerMangerId
+		from 
+			cd_manager_company cmc 
+		left join 
+			sys_users su on cmc.CD_MANAGER_ID = su.id
+		where 
+			cmc.CD_COMPANY_ID = #{id}
+	</select>
+
+
+	<select id="queryCompanyManagerListById" resultType="com.xmomen.module.base.model.CompanyCustomerManager" parameterType="java.util.HashMap">
+		select
+			su.realName as customerManger,
+			su.id as customerMangerId
+		from
+			cd_manager_company cmc
+		left join
+			sys_users su on cmc.CD_MANAGER_ID = su.id
+		where
+			cmc.CD_COMPANY_ID = #{id}
+		<if test="managerId">
+			AND cmc.CD_MANAGER_ID = #{managerId}
+		</if>
+	</select>
+</mapper>
+

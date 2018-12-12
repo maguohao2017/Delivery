@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.job.mapper.PackageTaskMapper" >
+
+	<select id="getPackageTaskList" resultType="com.xmomen.module.job.model.PackageTaskModel" parameterType="java.util.HashMap">
+		SELECT
+			tj.*,
+			(tj.COUNT_VALUE-tj.FINISH_value) as noFinishValue,
+			CI.ITEM_CODE,
+			CI.ITEM_NAME,
+			CI.CAIZAI_USER,
+			CI.JIANCE_USER,
+			CI.NONG_CAN_LV,
+			CI.yieldly,
+			CI.SPEC,
+			CI.sell_Unit,
+			SU.REALNAME as jobUserName
+		FROM tb_job tj
+		LEFT JOIN cd_item CI ON tj.CD_ITEM_ID = CI.ID
+		LEFT JOIN sys_users SU ON tj.JOB_USER = SU.ID
+		<where>
+			<if test="keyword">
+                  AND tj.PURCHASE_CODE LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="packageTaskId">
+                  AND tj.id = #{packageTaskId}
+            </if>
+            <if test="viewType == 'view'">
+            	and (tj.job_status = 0 or tj.job_status =1)
+            </if>
+            <if test="userId != null">
+            	and tj.job_user = #{userId}
+            </if>
+            <if test="nextPackageTaskId">
+            	and (tj.job_status = 0 or tj.job_status =1)
+            	and tj.id > #{nextPackageTaskId}
+            </if>
+            <if test="nextPackageTaskIdZero == 1">
+            	and (tj.job_status = 0 or tj.job_status =1)
+            </if>
+            <if test="packageTaskCreateTimeStart">
+                <![CDATA[
+                  AND DATE_FORMAT(tj.JOB_CREATE_TIME ,'%Y-%m-%d')>= #{packageTaskCreateTimeStart}
+                ]]>
+            </if>
+            <if test="packageTaskCreateTimeEnd">
+                <![CDATA[
+                  AND DATE_FORMAT(tj.JOB_CREATE_TIME ,'%Y-%m-%d') <= #{packageTaskCreateTimeEnd}
+                ]]>
+            </if>
+		</where>
+		order by
+		tj.job_create_time desc,
+		tj.JOB_STATUS
+    </select>
+
+    <update id="updateBeginTime" parameterType="java.lang.Integer">
+    	update 
+    		tb_job 
+    	set 
+    		job_status = 0 ,job_begin_time = null ,finish_time = null
+    	where 
+    		id=#{id}
+    </update>
+
+    <update id="updateFinishTime" parameterType="java.lang.Integer">
+    	update 
+    		tb_job 
+    	set 
+    		job_status = 1,finish_time = null
+    	where 
+    		id=#{id}
+    </update>
+</mapper>

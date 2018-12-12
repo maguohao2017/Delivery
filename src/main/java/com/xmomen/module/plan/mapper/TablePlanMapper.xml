@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmomen.module.plan.mapper.TablePlanMapper" >
+
+    <!--    查询消息    -->
+    <select id="getTablePlanList" resultType="com.xmomen.module.plan.model.TablePlanModel" parameterType="java.util.HashMap">
+        SELECT
+        	ttp.*,
+        	cp.plan_name,
+        	cp.delivery_type,
+        	cp.delivery_time,
+        	cc.id as company_id,
+        	cc.company_name,
+        	su.realName as managerName,
+        	su.id as manager_id
+        FROM
+        	tb_table_plan  ttp
+        left join cd_plan cp on ttp.cd_plan_id = cp.id
+        left join cd_coupon cm on ttp.coupon_number = cm.coupon_number  
+        left join cd_company cc on cm.cd_company_id = cc.id
+        left join sys_users su on cm.cd_user_id = su.id
+        <where>
+              <if test="keyword">
+                  AND (ttp.COUPON_NUMBER LIKE CONCAT('%', #{keyword}, '%') or ttp.consignee_Name LIKE CONCAT('%', #{keyword}, '%') or ttp.CONSIGNEE_PHONE like CONCAT('%', #{keyword}, '%'))
+              </if>
+              <if test="id">
+                  AND ttp.id = #{id}
+              </if>
+              <if test="userId">
+              	 AND cm.cd_user_id = #{userId}
+              </if>
+          </where>
+    </select>
+    
+    <!-- 获取有效的蔬菜计划 -->
+   	<select id="getNormalTablePlanList" resultType="com.xmomen.module.plan.model.TablePlanModel" parameterType="java.util.HashMap">
+   		select 
+   			plan.DELIVERY_TIME,
+   			plan.DELIVERY_TYPE,
+   			plan.IS_RANDOM,
+   			plan.CD_CATEGORY_ID,
+   			plan.RANDOM_NUM,
+   			plan.price,
+   			cc.id as company_id,
+        	cc.company_name,
+        	su.realName as managerName,
+        	su.id as manager_id,
+   			table_plan.* 
+   		from 
+   			tb_table_plan table_plan
+		left join cd_plan plan on table_plan.CD_PLAN_ID= plan.id 
+		left join cd_member cm on table_plan.cd_member_id = cm.id  
+        left join cd_company cc on cm.cd_company_id = cc.id
+        left join sys_users su on cm.cd_user_id = su.id
+		 <where>
+			table_plan.IS_STOP = 0
+			and table_plan.TOTAL_SEND_VALUE > table_plan.SEND_VALUE
+			 <if test="currentDate">
+			  <![CDATA[
+				AND DATE_FORMAT(table_plan.BEGIN_TIME ,'%Y-%m-%d') <= #{currentDate}
+			  ]]>
+			</if>
+			<if test="weekday">
+			and table_plan.send_week_day like CONCAT('%', #{weekday}, '%')
+			</if>
+		 </where>
+    </select>
+    
+    
+  <!-- 随机获取某类商品 -->
+    <select  id="getRandItem" resultType="com.xmomen.module.base.entity.CdPlanItem" parameterType="java.util.HashMap">
+			select 
+				1 as count_value,
+				id as cd_item_id
+			from 
+				cd_item
+			where CD_CATEGORY_ID = #{categoryId}
+			order by 
+				RAND() 
+			LIMIT #{limit}
+    </select>
+</mapper>
